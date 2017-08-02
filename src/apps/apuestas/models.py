@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class Questions(models.Model):
+class Pregunta(models.Model):
     text = models.CharField(max_length = 200)
     due_date = models.DateTimeField('Fecha Limite')
     create_date = models.DateTimeField('fecha publicacion', auto_now_add = True)
