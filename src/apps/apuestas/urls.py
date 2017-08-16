@@ -1,6 +1,7 @@
 from django.conf.urls import url
-from .views import PreguntaView, index
+from .views import PreguntaView, apuestas_list
+
 urlpatterns = [
-    url(r'^$', index, name='apuestas_index'),
+    url(r'^$', apuestas_list, name='apuestas_list'),
     url(r'^(?P<id_pregunta>\d+)/$', PreguntaView.as_view())
 ]

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-
 from django import forms
-from .models import Pregunta, RespuestasValidas
+from .models import Pregunta
 
 
 class PreguntaForm(forms.ModelForm):
@@ -13,15 +12,15 @@ class PreguntaForm(forms.ModelForm):
         model = Pregunta
         fields = ('text', 'due_date')
         exclude = ('create_date', 'create_user', 'update_date', 'update_user')
-
         widgets = {
             'text': forms.TextInput(attrs={
-                'placeholder' : 'Ingrese la pregunta.',
+                'placeholder': 'Ingrese la pregunta.',
                 'class': 'form-control'
-                }),
+            }),
             'due_date': forms.TextInput(attrs={
                 'class': 'form-control'
-                    }),
+            }),
         }
+
     def save(self, commit=True):
         return super(PreguntaForm, self).save(commit=commit)
