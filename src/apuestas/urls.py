@@ -21,8 +21,11 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+<<<<<<< HEAD
     url(r'^accounts/', include('django.contrib.auth.urls')),
 
+=======
+>>>>>>> 0c814c183699d7ab7ec2bad0aafb31c9d9f32beb
     url(r'^$', TemplateView.as_view(template_name='index.html')),
     url(r'^apuestas/', include('apps.apuestas.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
+=======
+>>>>>>> 0c814c183699d7ab7ec2bad0aafb31c9d9f32beb
 from django.shortcuts import render
 from django.views import View
 from django.template import loader
@@ -8,7 +11,11 @@ from django.http import HttpResponse
 from .forms import PreguntaForm
 from .models import Pregunta
 
+<<<<<<< HEAD
 @login_required
+=======
+
+>>>>>>> 0c814c183699d7ab7ec2bad0aafb31c9d9f32beb
 def apuestas_list(request):
     form = PreguntaForm()
     if request.method == 'POST':
@@ -26,6 +33,7 @@ def apuestas_list(request):
         'pregunta_list': pregunta_list
     }
     return HttpResponse(template.render(context, request))
+
 
 class PreguntaView(View):
     form = PreguntaForm()
