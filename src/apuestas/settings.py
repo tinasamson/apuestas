@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y%xvm1%whx=9!u!vkf=6xb0)8)jz+h=lpsx$b^1rkc6job0+ei'
+SECRET_KEY = '*^ky66ou6v0sfqkr&2+(byph00c19wgm#x6v+mrpsw^4#+6aeg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'apuestas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': ['templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,8 +69,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'apuestas.wsgi.application'
-
-
 
 
 # Password validation
@@ -115,4 +113,5 @@ try:
     from .local_settings import *
 except:
     pass
-#after import local_settings
+
+# AFTER IMPORT LOCAL_SETTINGS
