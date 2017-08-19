@@ -5,21 +5,13 @@ from django.shortcuts import render
 from django.views import View
 from django.template import loader
 from django.http import HttpResponse
-from .forms import PreguntaForm
-from .models import Pregunta
+from .forms import PreguntaForm, ApuestasForm
+from .models import Pregunta, Apuestas
 
 
 @login_required
 
 def apuestas_list(request):
-    form = PreguntaForm()
-    if request.method == 'POST':
-        form = PreguntaForm(data=request.POST)
-        if form.is_valid():
-            pregunta = form.save(commit=False)
-            pregunta.create_user = request.user
-            pregunta.update_user = request.user
-            pregunta.save()
     template = loader.get_template('apuestas_list.html')
     pregunta_list = Pregunta.objects.all()
     context = {
@@ -54,3 +46,21 @@ class PreguntaView(View):
             'form': form
         }
         return render(request, self.template_name, context)
+
+
+@login_required
+def apuesta(request, id_pregunta):
+    template = loader.get_template('apuesta.html')
+    pregunta = Pregunta.objects.get (pk = id_pregunta)
+    form = ApuestasForm()
+    if request.method == 'POST':
+        form = ApuestasForm(pregunta, request.user, data=request.POST)
+        if form.is_valid():
+            respuestas_apuestas = form.save(commit = False)
+            respuestas_apuestas.user = request.user
+            respuestas_apuestas.save()
+    context = {
+        'form': form,
+        'pregunta' : pregunta
+    }
+    return HttpResponse(template.render(context, request))

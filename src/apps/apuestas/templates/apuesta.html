@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block body %}
+      <h1> {{ pregunta.text }}</h1>
+      <form class="group-form" action="" method="post">
+         {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-primary" type="submit" name="button">Guardar</button>
+      </form>
+      {{ form }}
+{% endblock %}

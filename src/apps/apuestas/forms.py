@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import Pregunta
+from .models import Pregunta, Apuestas
 
 
 class PreguntaForm(forms.ModelForm):
@@ -24,3 +24,32 @@ class PreguntaForm(forms.ModelForm):
 
     def save(self, commit=True):
         return super(PreguntaForm, self).save(commit=commit)
+
+
+class ApuestasForm(forms.ModelForm):
+
+    pregunta = None
+    user = None
+    def __init__(self, pregunta, user, *args, **kwargs):
+        super(ApuestasForm, self).__init__(*args, **kwargs)
+        self.pregunta = pregunta
+        self.fields['respuestas_validas'].label = self.pregunta.text
+        self.fields['respuestas_validas'].queryset = self.pregunta.respuestas_validas
+        self.pregunta.respuestas_validas
+
+    class Meta:
+        model = Apuestas
+        fields = ('respuesta_valida', )
+        exclude = ('pregunta', 'date', 'user')
+        widgets = {
+           'respuesta_valida': forms.Select(attrs={
+                'placeholder' : 'Ingrese la pregunta.',
+                'class': 'form-control'
+           }),
+
+        }
+    def clean_respuesta_valida(self):
+        if Apuestas.objects.filter(pregunta=self.pregunta, user=self.user.exists())
+            raise forms.ValidationError('Ya se contesto esta pregunta')
+        else:
+            return self.cleaned_data['respuesta_valida']
