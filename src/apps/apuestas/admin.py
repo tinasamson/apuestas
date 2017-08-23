@@ -26,7 +26,11 @@ class PreguntaAdmin(admin.ModelAdmin):
     actions = [add_simbol_text, ]
 
 admin.site.register(Pregunta, PreguntaAdmin)
-admin.site.register(RespuestaValidas)
+
+class RespuestaValidasAdmin(admin.ModelAdmin):
+    list_display = ('id', 'pregunta', 'text')
+
+admin.site.register(RespuestaValidas, RespuestaValidasAdmin)
 
 
 # Register your models here.

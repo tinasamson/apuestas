@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import PreguntaView, apuestas_list
+from .views import PreguntaView, apuestas_list, apuesta
 
 urlpatterns = [
     url(r'^$', apuestas_list, name='apuestas_list'),
