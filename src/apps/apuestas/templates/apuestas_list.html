@@ -2,6 +2,8 @@
 {% load security %}
 
 {% block body %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src={% static "/js/apuestas.js" %}></script>
     <h1>ABM Apuestas</h1>
     <hr>
     <table class="table table-striped table-bordered">
@@ -10,6 +12,8 @@
                 <th>ID</th>
                 <th>Text</th>
                 <th>Autor</th>
+                <th style="width: 400px;">result</th>
+                <th>Resultados</th>
                 <th>...</th>
             </tr>
         </thead>
@@ -20,11 +24,37 @@
                     <td>{{ pregunta.text }}</td>
                     <td>{{ pregunta.create_user }}</td>
                     <td>
+                      {% if pregunta.get_result %}
+                        <script type="text/javascript">
+                          google.charts.load('current', {'packages':['corechart']});
+                          google.charts.setOnLoadCallback(drawChart);
+
+                          function drawChart() {
+
+                            var data = google.visualization.arrayToDataTable([
+                              ['Respuestas', 'Cantidad'],
+                              {% for x in pregunta.get_result %}['{{ x.0 }}', {{ x.1 }}],{% endfor%}
+                            ]);
+
+                            var options = {
+                              legend: { position: "none" },
+                            };
+                            var chart = new google.visualization.BarChart(document.getElementById('piechart_{{ pregunta.id }}'));
+
+                            chart.draw(data, options);
+                          }
+                        </script>
+                        <div id="piechart_{{ pregunta.id }}" style="width: 400px; height: 80px;"></div>
+                        {% endif %}
+                    </td>
+                    <td>
                       {% if request.user|has_administrador_group %}
                       <a href="/apuestas/{{ pregunta.id }}/">Editar</span></a>
                       {% endif %}
                       {% if request.user|has_jugador_group %}
-                      <a href="/apuestas/{{ pregunta.id }}/">Jugar</span></a>
+                          {% for x in pregunta.respuestas_validas %}
+                              <a href="javascript:send_apuestas">{{.text}}</a>
+                          {%endfor%}
                       {% endif %}
                     </td>
                 </tr>

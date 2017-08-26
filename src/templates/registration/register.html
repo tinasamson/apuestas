@@ -21,7 +21,7 @@
             <button type="submit" name="button" class="btn btn-primary">Login</button>
         </div>
         {% if form.errors %}
-            <p>Usuario o password incorrecto.</p>
+            {{form.errors}}
         {% endif %}
 
         <input type="hidden" name="next" value="{{ next }}">
