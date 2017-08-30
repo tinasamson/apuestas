@@ -20,7 +20,7 @@ class Pregunta(models.Model):
     def respuestas_validas(self):
         return RespuestaValidas.objects.filter(pregunta=self)
     def get_result(self):
-        respuestas_validas = self.respuestas_validas
+        respuestas_validas = RespuestaValidas.objects.filter(pregunta=self)
         dic = []
         for x in respuestas_validas:
               dic.append((x.text, Apuestas.objects.filter(respuesta_valida=x).count()))

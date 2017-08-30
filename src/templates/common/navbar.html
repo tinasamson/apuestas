@@ -4,10 +4,10 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" href="#">{{ request.user }}</a>
-        {% if request.user.is_authenticated %}
+  <div class="collapse navbar-collapse float-right" id="navbarNavAltMarkup">
+    <div class="navbar-nav" style="position: absolute; right:15px">
+        {% if request.user.is_authenticated%}
+          <a class="nav-item nav-link" href="#">{{ request.user }}</a>
           <a class="nav-item nav-link" href="/logout/">Logout</a>
         {%else%}
           <a class="nav-item nav-link" href="/accounts/login/">Login</a>

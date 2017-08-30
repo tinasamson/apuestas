@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
+
 
 def register_user(request):
     template = loader.get_template('registration/register.html')
@@ -16,7 +18,7 @@ def register_user(request):
             user.is_active = True
             grupo_jugador = Group.objects.get(name = 'Jugador')
             user.save()
-            user.group.add(grupo_jugador)
+            user.groups.add(grupo_jugador)
     context = {
         'form' : form
     }
