@@ -1,5 +1,45 @@
 
 {% extends "base.html" %}
-{% block body %}
+{% load static %}
 
+
+{% block body %}
+<script src="{% static 'js/apuestas.js' %}" charset="utf-8"></script>
+
+</script>
+<div class="modal fade" id="modal-register">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-group" action="/register/" id="id_form_register" method="post">
+          <div class="container">
+            {% csrf_token %}
+            <div class="row">
+                <label for="username">Usuario</label>
+                <input type="text"  placeholder="Ingrese el usuario" class="form-control" name="username" required="" id="id_username" maxlength="254">
+            </div>
+            <div class="row">
+                <label for="password">Contraseña</label>
+                <input type="password" placeholder="Ingrese la contraseña" class="form-control" name="password1" required="" id="id_password1" maxlength="254">
+            </div>
+            <div class="row">
+                <label for="password">Confirmacion Contraseña</label>
+                <input type="password" placeholder="Ingrese denuevo la contraseña" class="form-control" name="password2" required="" id="id_password2" maxlength="254">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="javascript: send_register_modal">Guardar</button>
+        <button type="button" class="btn btn-secondary" onclick="javascript: cancel_modal_register()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
