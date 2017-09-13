@@ -1,2 +1,4 @@
 venv/
 *.pyc
+*.DS_Store
+/src/apuestas/local_settings.py
