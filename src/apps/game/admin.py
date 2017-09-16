@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Pregunta, RespuestaValidas
+from .models import Pregunta, RespuestaValidas, Apuestas
 
 
 def add_simbol_text(modeladmin, request, queryset):
@@ -31,6 +31,8 @@ class RespuestaValidasAdmin(admin.ModelAdmin):
     list_display = ('id', 'pregunta', 'text')
 
 admin.site.register(RespuestaValidas, RespuestaValidasAdmin)
+
+admin.site.register(Apuestas)
 
 
 # Register your models here.
