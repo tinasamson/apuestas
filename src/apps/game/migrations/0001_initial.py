@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('create_date', models.DateTimeField(auto_now_add=True, verbose_name='Fecha Publicacion')),
                 ('update_date', models.DateTimeField(auto_now_add=True, verbose_name='Fecha Actualizada')),
                 ('create_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='respusta_valida_create_user', to=settings.AUTH_USER_MODEL)),
-                ('pregunta', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='apuestas.Pregunta')),
+                ('pregunta', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='game.Pregunta')),
                 ('update_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='respusta_valida_update_user', to=settings.AUTH_USER_MODEL)),
             ],
         ),

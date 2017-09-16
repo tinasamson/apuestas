@@ -28,6 +28,6 @@ urlpatterns = [
     url(r'^logout/', logout, {'next_page': '/'}),
 
     url(r'^$', TemplateView.as_view(template_name='index.html')),
-    url(r'^apuestas/', include('apps.apuestas.urls')),
+    url(r'^apuestas/', include('apps.game.urls')),
     url(r'^register/', register_user, name = 'register'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -4,5 +4,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class ApuestasConfig(AppConfig):
-    name = 'apuestas'
+class GameConfig(AppConfig):
+    name = 'game'
