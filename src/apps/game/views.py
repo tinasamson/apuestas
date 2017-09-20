@@ -1,14 +1,60 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import urllib2
+import json
+
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import View
 from django.template import loader
 from django.http import HttpResponse
+
 from .forms import PreguntaForm, ApuestasForm
 from .models import Pregunta
 
+def get_apuestas_api():
+    method = "GET"
+    handler = urllib2.HTTPHandler()
+    opener = urllib2.build_opener(handler)
+    #data = urllib.urlencode({'usuario_id':'', respuesta_id
+    #request = urllib2.Request(url, data=data)
+    request = urllib2.Request(settings.HOST_API)
+    request.add_header("Content-Type",'application/json')
+    request.add_header('Authorization', 'token %s' % settings.API_AUTH_TOKEN)
+    request.get_method = lambda: method
+    try:
+        connection = opener.open(request)
+    except urllib2.HTTPError,e:
+        connection = e
+
+    if connection.code == 200:
+        data = connection.read()
+        return json.loads(data)
+    else:
+        pass
+
+def set_apuestas_api(respuesta_id):
+    method = "POST"
+    handler = urllib2.HTTPHandler()
+    opener = urllib2.build_opener(handler)
+    #data = urllib.urlencode({'usuario_id':'', respuesta_id
+    request = urllib2.Request(settings.HOST_API, data=data)
+    #request = urllib2.Request(settings.HOST_API)
+    request.add_header("Content-Type",'application/json')
+    request.add_header('Authorization', 'token %s' % settings.API_AUTH_TOKEN)
+    request.get_method = lambda: method
+    try:
+        connection = opener.open(request)
+    except urllib2.HTTPError,e:
+        connection = e
+
+    if connection.code == 200:
+        data = connection.read()
+        return json.loads(data)
+    else:
+        pass
 
 @login_required
 def apuestas_list(request):
@@ -16,7 +62,8 @@ def apuestas_list(request):
     pregunta_list = Pregunta.objects.all()
     context = {
         'username': request.user.username,
-        'pregunta_list': pregunta_list
+        'pregunta_list': pregunta_list,
+        'api_list' : get_apuestas_api()
     }
     return HttpResponse(template.render(context, request))
 
@@ -60,6 +107,26 @@ def apuesta(request, id_pregunta):
             respuesta_apuesta.save()
     context = {
         'pregunta': pregunta,
+        'form': form
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required
+def set_respuesta_api(request):
+    if request.method == 'GET':
+        id_respuesta = request.GET.get('id_respuesta')
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = True
+            grupo_jugador = Group.objects.get(name='Jugador')
+            user.save()
+            user.groups.add(grupo_jugador)
+            response = json_response().response_ok()
+        else:
+            response = json_response().response_error_form(form)
+        return response
+
+    context = {
         'form': form
     }
     return HttpResponse(template.render(context, request))

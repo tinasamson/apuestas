@@ -9,7 +9,7 @@ from fab_tools.fab_settings import (
 
 
 def test():
-    env.hosts = ["pdalmasso.tuxis.com.ar"]
+    env.hosts = ["tsamson.tuxis.com.ar"]
     env.user = USER['test']
     env.password = PASSWORD['test']
     env.entorno = 'test'
@@ -17,7 +17,7 @@ def test():
 
 
 def prod():
-    env.hosts = ["pdalmasso.tuxis.com.ar"]
+    env.hosts = ["tsamson.tuxis.com.ar"]
     env.user = USER['prod']
     env.password = PASSWORD['prod']
     env.entorno = 'prod'

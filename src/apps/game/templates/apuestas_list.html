@@ -60,4 +60,24 @@
             {% endfor %}
         </tbody>
     </table>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Pregunta</th>
+                <th>Respuesta 1</th>
+                <th>Respuesta 2</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% regroup api_list by pregunta_text as apuestas_api_list%}
+    {% for apuesta in apuestas_api_list %}
+        <tr>
+            <td><strong>{{ apuesta.grouper }}</strong></td>
+            {% for respuesta in apuesta.list %}
+            <td><a href="">{{ respuesta.text }}</a></td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
