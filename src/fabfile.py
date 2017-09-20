@@ -40,6 +40,7 @@ def deploy():
         with cd(PATH_PROJECT_SRC[env.entorno]):
             run('find . -name \'*.pyc\' -delete')
             with prefix(PATH_VENV_ACTIVATE[env.entorno]):
+                run('pip install -r ../requirements.txt')
                 run('python manage.py migrate -v 1')
                 run('rm static -R')
                 run('python manage.py collectstatic -l --noinput')
