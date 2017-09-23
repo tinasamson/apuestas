@@ -28,7 +28,7 @@ def registrar_apuesta(request):
         respuesta_id = request.POST.get('respuesta_id', 0)
         RespuestaValidas = apps.get_model('game', 'RespuestaValidas')
         Apuestas = apps.get_model('game', 'Apuestas')
-        user = User.objects.get(pk=usuario_id)
+        user = User.objects.get(pk=request.user.id)
         respuesta_validas = RespuestaValidas.objects.get(pk=respuesta_id)
         apuesta = Apuestas(
             respuesta_valida=respuesta_validas,

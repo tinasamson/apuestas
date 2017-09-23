@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import urllib
 import urllib2
 import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.template import loader
 from django.http import HttpResponse
@@ -18,9 +19,9 @@ def get_apuestas_api():
     method = "GET"
     handler = urllib2.HTTPHandler()
     opener = urllib2.build_opener(handler)
-    #data = urllib.urlencode({'usuario_id':'', respuesta_id
+    #data = urllib.urlencode({'usuario_id':'2',}])
     #request = urllib2.Request(url, data=data)
-    request = urllib2.Request(settings.HOST_API)
+    request = urllib2.Request(settings.HOST_API + 'Apuestas')
     request.add_header("Content-Type",'application/json')
     request.add_header('Authorization', 'token %s' % settings.API_AUTH_TOKEN)
     request.get_method = lambda: method
@@ -39,10 +40,8 @@ def set_apuestas_api(respuesta_id):
     method = "POST"
     handler = urllib2.HTTPHandler()
     opener = urllib2.build_opener(handler)
-    #data = urllib.urlencode({'usuario_id':'', respuesta_id
-    request = urllib2.Request(settings.HOST_API, data=data)
-    #request = urllib2.Request(settings.HOST_API)
-    request.add_header("Content-Type",'application/json')
+    data = urllib.urlencode({'respuesta_id': respuesta_id})
+    request = urllib2.Request(settings.HOST_API + 'registrar_apuesta/', data=data)
     request.add_header('Authorization', 'token %s' % settings.API_AUTH_TOKEN)
     request.get_method = lambda: method
     try:
@@ -52,6 +51,7 @@ def set_apuestas_api(respuesta_id):
 
     if connection.code == 200:
         data = connection.read()
+
         return json.loads(data)
     else:
         pass
@@ -115,18 +115,15 @@ def apuesta(request, id_pregunta):
 def set_respuesta_api(request):
     if request.method == 'GET':
         id_respuesta = request.GET.get('id_respuesta')
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = True
-            grupo_jugador = Group.objects.get(name='Jugador')
-            user.save()
-            user.groups.add(grupo_jugador)
-            response = json_response().response_ok()
-        else:
-            response = json_response().response_error_form(form)
-        return response
-
-    context = {
-        'form': form
-    }
-    return HttpResponse(template.render(context, request))
+        try:
+            set_apuestas_api(id_respuesta)
+            return HttpResponse(
+                json.dumps({'status' : 'ok'}),
+                Content_type = 'application/json; charset = UTF-8'
+            )
+        except:
+            pass
+    return HttpResponse(
+        json.dump({'status': 'error'}),
+        content_type = 'application/jason; charset = UTF-8'
+    )
