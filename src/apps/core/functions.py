@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import json
 
@@ -5,7 +6,7 @@ from django.http import HttpResponse
 
 
 class json_response():
-    
+
     def dic_to_httpresponse(self, pdic):
         return HttpResponse(
             json.dumps(pdic),

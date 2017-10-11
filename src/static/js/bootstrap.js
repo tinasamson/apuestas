@@ -1,1 +1,1 @@
-/Users/pdalmasso/Dev/Project/apuestas/src/static-dev/js/bootstrap.js
+/home/tina/projecto/apuestas/src/static-dev/js/bootstrap.js

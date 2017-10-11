@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import json
 import urllib
 import urllib2
-import json
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -15,26 +15,6 @@ from django.http import HttpResponse
 from .forms import PreguntaForm, ApuestasForm
 from .models import Pregunta
 
-def get_apuestas_api():
-    method = "GET"
-    handler = urllib2.HTTPHandler()
-    opener = urllib2.build_opener(handler)
-    #data = urllib.urlencode({'usuario_id':'2',}])
-    #request = urllib2.Request(url, data=data)
-    request = urllib2.Request(settings.HOST_API + 'Apuestas')
-    request.add_header("Content-Type",'application/json')
-    request.add_header('Authorization', 'token %s' % settings.API_AUTH_TOKEN)
-    request.get_method = lambda: method
-    try:
-        connection = opener.open(request)
-    except urllib2.HTTPError,e:
-        connection = e
-
-    if connection.code == 200:
-        data = connection.read()
-        return json.loads(data)
-    else:
-        pass
 
 def set_apuestas_api(respuesta_id):
     method = "POST"
@@ -51,7 +31,29 @@ def set_apuestas_api(respuesta_id):
 
     if connection.code == 200:
         data = connection.read()
+        print data
+        return json.loads(data)
+    else:
+        pass
 
+
+def get_apuestas_api():
+    method = "GET"
+    handler = urllib2.HTTPHandler()
+    opener = urllib2.build_opener(handler)
+    #data = urllib.urlencode([{respuesta_id: '2'}])
+    #request = urllib2.Request(url, data=data)
+    request = urllib2.Request(settings.HOST_API + 'apuestas')
+    request.add_header("Content-Type",'application/json')
+    request.add_header('Authorization', 'token %s' % settings.API_AUTH_TOKEN)
+    request.get_method = lambda: method
+    try:
+        connection = opener.open(request)
+    except urllib2.HTTPError,e:
+        connection = e
+
+    if connection.code == 200:
+        data = connection.read()
         return json.loads(data)
     else:
         pass
@@ -63,7 +65,7 @@ def apuestas_list(request):
     context = {
         'username': request.user.username,
         'pregunta_list': pregunta_list,
-        'api_list' : get_apuestas_api()
+        'api_list': get_apuestas_api()
     }
     return HttpResponse(template.render(context, request))
 
@@ -111,19 +113,17 @@ def apuesta(request, id_pregunta):
     }
     return HttpResponse(template.render(context, request))
 
+
 @login_required
 def set_respuesta_api(request):
-    if request.method == 'GET':
-        id_respuesta = request.GET.get('id_respuesta')
-        try:
-            set_apuestas_api(id_respuesta)
-            return HttpResponse(
-                json.dumps({'status' : 'ok'}),
-                Content_type = 'application/json; charset = UTF-8'
-            )
-        except:
-            pass
+
+    id_respuesta = request.GET.get('id_respuesta')
+    set_apuestas_api(id_respuesta)
     return HttpResponse(
-        json.dump({'status': 'error'}),
-        content_type = 'application/jason; charset = UTF-8'
+        json.dumps({'status': 'ok'}),
+        content_type='application/json; charset=UTF-8'
+    )
+    return HttpResponse(
+        json.dumps({'status': 'error'}),
+        content_type='application/json; charset=UTF-8'
     )

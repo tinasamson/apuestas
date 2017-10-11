@@ -12,7 +12,6 @@
                 <th>Text</th>
                 <th>Autor</th>
                 <th style="width: 400px;">result</th>
-                <th>Resultados</th>
                 <th>...</th>
             </tr>
         </thead>
@@ -23,23 +22,19 @@
                     <td>{{ pregunta.text }}</td>
                     <td>{{ pregunta.create_user }}</td>
                     <td>
-                      {% if pregunta.get_result %}
+                        {% if pregunta.get_result %}
                         <script type="text/javascript">
                           google.charts.load('current', {'packages':['corechart']});
                           google.charts.setOnLoadCallback(drawChart);
-
                           function drawChart() {
-
                             var data = google.visualization.arrayToDataTable([
                               ['Respuestas', 'Cantidad'],
-                              {% for x in pregunta.get_result %}['{{ x.0 }}', {{ x.1 }}],{% endfor%}
+                              {% for x in pregunta.get_result %}['{{ x.0 }}',     {{ x.1 }}],{% endfor%}
                             ]);
-
                             var options = {
                               legend: { position: "none" },
                             };
                             var chart = new google.visualization.BarChart(document.getElementById('piechart_{{ pregunta.id }}'));
-
                             chart.draw(data, options);
                           }
                         </script>
@@ -47,14 +42,12 @@
                         {% endif %}
                     </td>
                     <td>
-                      {% if request.user|has_administrador_group %}
-                      <a href="/apuestas/{{ pregunta.id }}/">Editar</span></a>
-                      {% endif %}
-                      {% if request.user|has_jugador_group %}
-                          {% for x in pregunta.respuestas_validas %}
-                              <a href="javascript:send_apuestas">{{.text}}</a>
-                          {%endfor%}
-                      {% endif %}
+                        {% if request.user|has_administrador_group %}
+                        <a href="/apuestas/{{ pregunta.id }}/">Editar</a>
+                        {% endif %}
+                        {% if request.user|has_jugador_group %}
+                        <a href="/apuestas/{{ pregunta.id }}/apuesta/">Jugar</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -74,7 +67,7 @@
         <tr>
             <td><strong>{{ apuesta.grouper }}</strong></td>
             {% for respuesta in apuesta.list %}
-            <td><a href="">{{ respuesta.text }}</a></td>
+            <td>{{ respuesta.text }}{{ respuesta.id }}</td>
             {% endfor %}
         </tr>
     {% endfor %}
